@@ -1,7 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   extends: ['@nuxt/ui-pro'],
-
+  uiPro: {
+    license: 'your-license',
+  },
   modules: [
     '@nuxt/content',
     '@nuxt/eslint',
