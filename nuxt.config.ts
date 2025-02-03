@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   uiPro: {
     license: '830E32F5-0C2F-4E23-B090-B08B3717C33B',
   },
+  devtools: {
+    enabled: true,
+  },
   modules: [
     '@nuxt/content',
     '@nuxt/eslint',
@@ -24,9 +27,6 @@ export default defineNuxtConfig({
         },
       },
     },
-  },
-  devtools: {
-    enabled: true,
   },
 
   compatibilityDate: '2024-07-11',

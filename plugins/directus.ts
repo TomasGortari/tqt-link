@@ -6,7 +6,7 @@ import {
   createItem,
   readSingleton,
 } from '@directus/sdk';
-import type { CustomDirectusTypes } from '~/types/directus';
+import type { CustomDirectusTypes } from '~~/types/directus';
 
 const directus = createDirectus<CustomDirectusTypes>(
   'https://api-affiliate-websites.com/'

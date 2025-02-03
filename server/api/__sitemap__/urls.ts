@@ -1,5 +1,5 @@
 import { defineSitemapEventHandler } from '#imports';
-import { Articles, ArticlesCategories } from '~/types/directus';
+import { Articles, ArticlesCategories } from '~~/types/directus';
 
 export default defineSitemapEventHandler(async (event) => {
   // fetch data directly in the correct type

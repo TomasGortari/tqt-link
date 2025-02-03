@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ArticlesCategories } from '~/types/directus';
+import type { ArticlesCategories } from '~~/types/directus';
 
 const { $directus, $readItems } = useNuxtApp();
 const { data: articles } = await useAsyncData('get-articles', () =>
