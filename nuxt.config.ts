@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   extends: ['@nuxt/ui-pro'],
   uiPro: {
-    license: 'your-license',
+    license: '830E32F5-0C2F-4E23-B090-B08B3717C33B',
   },
   modules: [
     '@nuxt/content',
