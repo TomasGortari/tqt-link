@@ -31,6 +31,14 @@ export type ArticlesCategories = {
   website?: string | Websites | null;
 };
 
+export type ConfigBasket = {
+  date_updated?: string | null;
+  id: number;
+  lvl?: number | null;
+  points?: number | null;
+  pos?: number | null;
+};
+
 export type ContactRequests = {
   date_created?: string | null;
   email?: string | null;
@@ -469,6 +477,16 @@ export type ProductsAffiliate = {
   website?: string | Websites | null;
 };
 
+export type Shoots = {
+  date_created?: string | null;
+  flash?: boolean | null;
+  id: number;
+  lvl?: number | null;
+  points?: number | null;
+  pos?: number | null;
+  shoot_in?: boolean | null;
+};
+
 export type Websites = {
   date_created?: string | null;
   date_updated?: string | null;
@@ -482,6 +500,7 @@ export type CustomDirectusTypes = {
   articles: Articles[];
   articles_articles: ArticlesArticles[];
   articles_categories: ArticlesCategories[];
+  config_basket: ConfigBasket;
   contact_requests: ContactRequests[];
   directus_access: DirectusAccess[];
   directus_activity: DirectusActivity[];
@@ -513,5 +532,6 @@ export type CustomDirectusTypes = {
   privacy_policy: PrivacyPolicy;
   product_categories: ProductCategories[];
   products_affiliate: ProductsAffiliate[];
+  shoots: Shoots[];
   websites: Websites[];
 };

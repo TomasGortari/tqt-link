@@ -5,6 +5,7 @@ import {
   readItems,
   createItem,
   readSingleton,
+  updateSingleton,
 } from '@directus/sdk';
 import type { CustomDirectusTypes } from '~~/types/directus';
 
@@ -14,6 +15,13 @@ const directus = createDirectus<CustomDirectusTypes>(
 
 export default defineNuxtPlugin(() => {
   return {
-    provide: { directus, readItem, readItems, createItem, readSingleton },
+    provide: {
+      directus,
+      readItem,
+      readItems,
+      createItem,
+      readSingleton,
+      updateSingleton,
+    },
   };
 });
