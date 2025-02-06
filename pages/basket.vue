@@ -121,14 +121,14 @@
       <!-- <UFormGroup required label="Your message" name="message">
             <UInput color="white" v-model="state.message" />
           </UFormGroup> -->
-
+      <p class="col-span-full text-xl text-center">{{ count }}</p>
       <UButton
         class="col-span-full"
         :loading="isPending || isConfinging"
         block
         type="submit"
       >
-        Send
+        Valider
       </UButton>
     </UForm>
   </div>
@@ -160,7 +160,7 @@ const state = reactive({
   shoot_in: false,
   flash: false,
 });
-
+const count = ref(0);
 const { mutate: updateConfig, isPending: isConfinging } = useMutation({
   mutationFn: () =>
     $directus
@@ -174,6 +174,7 @@ const { mutate: updateConfig, isPending: isConfinging } = useMutation({
       .then(() => {
         state.shoot_in = false;
         state.flash = false;
+        count.value = count.value + 1;
       }),
 });
 const { mutate, isPending, isSuccess } = useMutation({
