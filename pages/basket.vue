@@ -118,18 +118,13 @@
         v-model="state.flash"
       />
 
-      <!-- <UFormGroup required label="Your message" name="message">
-            <UInput color="white" v-model="state.message" />
-          </UFormGroup> -->
       <p class="col-span-full text-xl text-center">{{ count }}</p>
-      <UButton
-        class="col-span-full"
-        :loading="isPending || isConfinging"
-        block
-        type="submit"
-      >
+      <UButton class="col-span-full" :loading="isPending" block type="submit">
         Valider
       </UButton>
+      <p class="py-5 text-xl font-bold text-center col-span-full">
+        Shoots today: {{ shootsTodayCount }}
+      </p>
     </UForm>
   </div>
 </template>
@@ -138,7 +133,7 @@
 import { object, number, type InferType } from 'yup';
 import type { FormSubmitEvent } from '#ui/types';
 import { useMutation } from '@tanstack/vue-query';
-const { $directus, $readSingleton, $createItem, $updateSingleton } =
+const { $directus, $readSingleton, $createItem, $updateSingleton, $readItems } =
   useNuxtApp();
 
 const { data: config } = await useAsyncData('get config_basket', () =>
@@ -161,30 +156,56 @@ const state = reactive({
   flash: false,
 });
 const count = ref(0);
+
+const { data: shoots } = await useAsyncData('get shoots of day', () =>
+  $directus.request(
+    $readItems('shoots', {
+      fields: ['*'],
+      filter: {
+        ['day(date_created)']: {
+          _eq: new Date().toLocaleDateString('fr', {
+            day: 'numeric',
+          }),
+        },
+      },
+    })
+  )
+);
+
+const shootsTodayCount = ref(shoots.value?.length || 0);
+
 const { mutate: updateConfig, isPending: isConfinging } = useMutation({
   mutationFn: () =>
-    $directus
-      .request(
-        $updateSingleton('config_basket', {
-          lvl: state.lvl,
-          points: state.points,
-          pos: state.pos,
-        })
-      )
-      .then(() => {
-        state.shoot_in = false;
-        state.flash = false;
-        count.value = count.value + 1;
-      }),
+    $directus.request(
+      $updateSingleton('config_basket', {
+        lvl: state.lvl,
+        points: state.points,
+        pos: state.pos,
+      })
+    ),
 });
 const { mutate, isPending, isSuccess } = useMutation({
   mutationFn: () =>
     $directus.request($createItem('shoots', state)).then(() => {
-      updateConfig();
+      if (state.shoot_in) {
+        count.value = 0;
+      } else {
+        count.value = count.value + 1;
+      }
+      state.shoot_in = false;
+      state.flash = false;
+      shootsTodayCount.value = shootsTodayCount.value + 1;
     }),
 });
 
 const onSubmit = async (event: FormSubmitEvent<Schema>) => {
   mutate();
 };
+
+watch(
+  () => state.lvl + state.pos + state.points,
+  () => {
+    updateConfig();
+  }
+);
 </script>
