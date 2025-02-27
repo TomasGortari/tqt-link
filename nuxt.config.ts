@@ -29,7 +29,7 @@ export default defineNuxtConfig({
       },
     },
   },
-
+  plugins: [{ src: '~/plugins/gtag.client.js', mode: 'client' }],
   compatibilityDate: '2024-07-11',
 
   typescript: {
