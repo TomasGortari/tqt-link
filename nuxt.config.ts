@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-og-image',
     '@nuxtjs/robots',
+    'nuxt-schema-org',
   ],
   image: {
     providers: {
@@ -34,7 +35,13 @@ export default defineNuxtConfig({
   typescript: {
     strict: false,
   },
+  schemaOrg: {
+    host: 'https://www.camp-venture.com',
+  },
+  // $schema: {
+  //   host: 'https://www.camp-venture.com',
 
+  // },
   site: {
     url: 'https://www.camp-venture.com',
     name: 'CampVenture',

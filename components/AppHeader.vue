@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const links = [
+  { label: 'All articles', to: '/blog', icon: 'i-lucide-rss' },
   {
     label: 'Buying Guides',
     to: '/blog/category/buying-guides',
@@ -32,7 +33,12 @@ const links = [
     </template>
 
     <template #right>
-      <UButton label="Shop" color="primary" icon="i-lucide-store" to="/shop" />
+      <UButton
+        label="Shop"
+        color="primary"
+        icon="i-lucide-store"
+        to="/products"
+      />
     </template>
 
     <template #panel>

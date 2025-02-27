@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { defineBreadcrumb, useSchemaOrg } from '#imports';
 import type { ArticlesCategories } from '~~/types/directus';
-
+const { website_id } = useRuntimeConfig().public;
 const { $directus, $readItems } = useNuxtApp();
 const { data: articles } = await useAsyncData('get-articles', () =>
   $directus.request(
     $readItems('articles', {
-      sort: ['date_created'],
+      sort: ['-date_created'],
       fields: [
         '*',
 
@@ -13,6 +14,11 @@ const { data: articles } = await useAsyncData('get-articles', () =>
           category: ['name', 'slug'],
         },
       ],
+      filter: {
+        website: {
+          _eq: website_id,
+        },
+      },
     })
   )
 );
@@ -23,6 +29,11 @@ const { data: headerLinks } = await useAsyncData(
     $directus.request(
       $readItems('articles_categories', {
         fields: ['*'],
+        filter: {
+          website: {
+            _eq: website_id,
+          },
+        },
       })
     ),
   {
@@ -50,6 +61,19 @@ useSeoMeta({
   description: description.value,
   ogDescription: description.value,
 });
+
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Blog',
+        item: 'https://www.camp-venture.com/blog',
+      },
+    ],
+  }),
+]);
 </script>
 
 <template>
@@ -64,6 +88,7 @@ useSeoMeta({
         v-if="headerLinks?.length"
         class="pt-[50px]"
         :links="headerLinks"
+        :ui="{ container: 'max-w-[95vw] overflow-x-auto ', inner: 'min-w-max' }"
       />
     </UPageHeader>
     <!-- :links="headerLinks as any" -->

@@ -2,7 +2,7 @@
   <UContainer>
     <UPage>
       <UPageHeader
-        title="Privacy Policy"
+        title="Terms & Conditions"
         :description="`Last Updated: ${new Date(
           data?.date_updated || data.date_created
         ).toLocaleDateString('en', {
@@ -21,9 +21,9 @@
 <script lang="ts" setup>
 const { $directus, $readSingleton } = useNuxtApp();
 const { website_id } = useRuntimeConfig().public;
-const { data } = await useAsyncData('get privacy-policy', () =>
+const { data } = await useAsyncData('get tc', () =>
   $directus.request(
-    $readSingleton('privacy_policy', {
+    $readSingleton('tc', {
       fields: ['*'],
       filter: {
         website: {
@@ -35,11 +35,11 @@ const { data } = await useAsyncData('get privacy-policy', () =>
 );
 
 useSeoMeta({
-  title: 'Privacy Policy',
-  ogTitle: 'Privacy Policy',
+  title: 'Terms & Conditions',
+  ogTitle: 'Terms & Conditions',
   description:
-    'Learn how CampVenture collects, uses, and protects your personal information. Read our Privacy Policy to understand your rights and how we ensure data security for our users.',
+    'Read the Terms & Conditions of CampVenture to understand the guidelines for using our website, including content usage, user responsibilities, and legal disclaimers. Stay informed before exploring our outdoor gear recommendations.',
   ogDescription:
-    'Learn how CampVenture collects, uses, and protects your personal information. Read our Privacy Policy to understand your rights and how we ensure data security for our users.',
+    'Read the Terms & Conditions of CampVenture to understand the guidelines for using our website, including content usage, user responsibilities, and legal disclaimers. Stay informed before exploring our outdoor gear recommendations.',
 });
 </script>

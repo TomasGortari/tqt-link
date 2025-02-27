@@ -1,3 +1,21 @@
+export type Ad = {
+  content?: string | null;
+  date_created?: string | null;
+  date_updated?: string | null;
+  id: string;
+  website?: string | Websites | null;
+};
+
+export type Analyse = {
+  comportements?: string | null;
+  consequences?: string | null;
+  date_created?: string | null;
+  emotions?: string | null;
+  id: number;
+  pensee_automatique?: string | null;
+  situation?: string | null;
+};
+
 export type Articles = {
   category?: string | ArticlesCategories | null;
   content?: string | null;
@@ -6,6 +24,7 @@ export type Articles = {
   description?: string | null;
   id: string;
   image?: string | DirectusFiles | null;
+  products_affiliate: any[] | ProductsAffiliateArticles[];
   related_articles: any[] | ArticlesArticles[];
   slug?: string | null;
   status: string;
@@ -455,26 +474,50 @@ export type PrivacyPolicy = {
   date_created?: string | null;
   date_updated?: string | null;
   id: string;
+  website?: string | Websites | null;
 };
 
 export type ProductCategories = {
   date_created?: string | null;
   date_updated?: string | null;
+  description?: string | null;
+  icon?: string | null;
   id: string;
   name?: string | null;
   slug?: string | null;
+  title?: string | null;
   website?: string | Websites | null;
 };
 
 export type ProductsAffiliate = {
+  affiliate_link?: string | null;
   asin?: string | null;
   category?: string | ProductCategories | null;
+  cons?: unknown | null;
   date_created?: string | null;
   date_updated?: string | null;
+  description?: string | null;
+  features?: unknown | null;
   id: string;
+  image?: string | DirectusFiles | null;
+  name?: string | null;
+  number_of_reviews?: number | null;
+  price?: number | null;
+  product_link?: string | null;
+  pros?: unknown | null;
+  rating?: number | null;
+  related_articles: any[] | ProductsAffiliateArticles[];
+  slug?: string | null;
   status: string;
+  suitability?: string | null;
   title?: string | null;
   website?: string | Websites | null;
+};
+
+export type ProductsAffiliateArticles = {
+  articles_id?: string | Articles | null;
+  id: number;
+  products_affiliate_id?: string | ProductsAffiliate | null;
 };
 
 export type Shoots = {
@@ -487,6 +530,14 @@ export type Shoots = {
   shoot_in?: boolean | null;
 };
 
+export type Tc = {
+  content?: string | null;
+  date_created?: string | null;
+  date_updated?: string | null;
+  id: string;
+  website?: string | Websites | null;
+};
+
 export type Websites = {
   date_created?: string | null;
   date_updated?: string | null;
@@ -497,6 +548,8 @@ export type Websites = {
 };
 
 export type CustomDirectusTypes = {
+  ad: Ad;
+  analyse: Analyse[];
   articles: Articles[];
   articles_articles: ArticlesArticles[];
   articles_categories: ArticlesCategories[];
@@ -532,6 +585,8 @@ export type CustomDirectusTypes = {
   privacy_policy: PrivacyPolicy;
   product_categories: ProductCategories[];
   products_affiliate: ProductsAffiliate[];
+  products_affiliate_articles: ProductsAffiliateArticles[];
   shoots: Shoots[];
+  tc: Tc;
   websites: Websites[];
 };

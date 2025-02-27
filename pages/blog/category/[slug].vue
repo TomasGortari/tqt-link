@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { defineArticle, defineBreadcrumb, useSchemaOrg } from '#imports';
 import type { ArticlesCategories } from '~~/types/directus';
+const { website_id } = useRuntimeConfig().public;
 const route = useRoute();
 const { $directus, $readItems } = useNuxtApp();
 const { data: articles } = await useAsyncData(
@@ -7,7 +9,7 @@ const { data: articles } = await useAsyncData(
   () =>
     $directus.request(
       $readItems('articles', {
-        sort: ['date_created'],
+        sort: ['-date_created'],
         fields: [
           '*',
 
@@ -16,11 +18,20 @@ const { data: articles } = await useAsyncData(
           },
         ],
         filter: {
-          category: {
-            slug: {
-              _eq: route.params.slug as string,
+          _and: [
+            {
+              category: {
+                slug: {
+                  _eq: route.params.slug as string,
+                },
+              },
             },
-          },
+            {
+              website: {
+                _eq: website_id,
+              },
+            },
+          ],
         },
       })
     )
@@ -32,6 +43,11 @@ const { data: headerLinks } = await useAsyncData(
     $directus.request(
       $readItems('articles_categories', {
         fields: ['*'],
+        filter: {
+          website: {
+            _eq: website_id,
+          },
+        },
       })
     ),
   {
@@ -48,15 +64,24 @@ const { data: headerLinks } = await useAsyncData(
 );
 
 const { data: category } = await useAsyncData(
-  'get articles category',
+  `get articles category ${route.params.slug}`,
   () =>
     $directus.request(
       $readItems('articles_categories', {
         fields: ['*'],
         filter: {
-          slug: {
-            _eq: route.params.slug as string,
-          },
+          _and: [
+            {
+              slug: {
+                _eq: route.params.slug as string,
+              },
+            },
+            {
+              website: {
+                _eq: website_id,
+              },
+            },
+          ],
         },
       })
     ),
@@ -79,6 +104,25 @@ useSeoMeta({
   description: category.value.description,
   ogDescription: category.value.description,
 });
+
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Blog',
+        item: 'https://www.camp-venture.com/blog',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: category.value.title,
+        item: `https://www.camp-venture.com/category`,
+      },
+    ],
+  }),
+]);
 </script>
 
 <template>
@@ -97,6 +141,7 @@ useSeoMeta({
         v-if="headerLinks?.length"
         class="pt-[50px]"
         :links="headerLinks"
+        :ui="{ container: 'max-w-[95vw] overflow-x-auto ', inner: 'min-w-max' }"
       />
     </UPageHeader>
     <!-- :links="headerLinks as any" -->

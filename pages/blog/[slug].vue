@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import type { ArticlesCategories } from '~~/types/directus';
-
+import { defineArticle, defineBreadcrumb, useSchemaOrg } from '#imports';
+import type {
+  ArticlesCategories,
+  ProductCategories,
+  ProductsAffiliate,
+  ProductsAffiliateArticles,
+} from '~~/types/directus';
+const { website_id } = useRuntimeConfig().public;
 const route = useRoute();
 const { $directus, $readItems } = useNuxtApp();
 const { data: post } = await useAsyncData(
-  'get-articles',
+  `get-article ${route.params.slug} `,
   () =>
     $directus.request(
       $readItems('articles', {
@@ -16,52 +22,64 @@ const { data: post } = await useAsyncData(
             related_articles: [
               { related_articles_id: ['*', { category: ['name', 'slug'] }] },
             ],
+            products_affiliate: [
+              { products_affiliate_id: ['*', { category: ['name', 'slug'] }] },
+            ],
           },
         ],
         filter: {
-          slug: {
-            _eq: route.params.slug as string,
-          },
+          _and: [
+            {
+              slug: {
+                _eq: route.params.slug as string,
+              },
+            },
+            {
+              website: {
+                _eq: website_id,
+              },
+            },
+          ],
         },
       })
     ),
   { transform: (d) => d?.[0] }
 );
 
-const { data: related_articles } = await useAsyncData(
-  'get-related articles',
-  () =>
-    $directus.request(
-      $readItems('articles', {
-        limit: 4,
-        sort: ['date_created'],
-        fields: [
-          '*',
+// const { data: related_articles } = await useAsyncData(
+//   'get-related articles',
+//   () =>
+//     $directus.request(
+//       $readItems('articles', {
+//         limit: 4,
+//         sort: ['-date_created'],
+//         fields: [
+//           '*',
 
-          {
-            category: ['name', 'slug'],
-          },
-        ],
-        filter: {
-          category: {
-            slug: {
-              _eq: (post.value.category as ArticlesCategories).slug,
-            },
-          },
-        },
-      })
-    ),
-  {
-    transform: (d) =>
-      d?.filter(
-        (x) =>
-          x.slug !== (route.params.slug as string) &&
-          !post.value.related_articles?.find(
-            (y) => y.related_articles_id.slug === x.slug
-          )
-      ),
-  }
-);
+//           {
+//             category: ['name', 'slug'],
+//           },
+//         ],
+//         filter: {
+//           category: {
+//             slug: {
+//               _eq: (post.value.category as ArticlesCategories).slug,
+//             },
+//           },
+//         },
+//       })
+//     ),
+//   {
+//     transform: (d) =>
+//       d?.filter(
+//         (x) =>
+//           x.slug !== (route.params.slug as string) &&
+//           !post.value.related_articles?.find(
+//             (y) => y.related_articles_id.slug === x.slug
+//           )
+//       ),
+//   }
+// );
 
 if (!post?.value)
   throw createError({
@@ -77,9 +95,61 @@ const description = post.value.description;
 useSeoMeta({
   title,
   ogTitle: title,
+  ogImage: `https://api-affiliate-websites.com/assets/${post.value.image}`,
+  twitterImage: `https://api-affiliate-websites.com/assets/${post.value.image}`,
   description,
   ogDescription: description,
 });
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Blog',
+        item: 'https://www.camp-venture.com/blog',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: post.value.title,
+        item: `https://www.camp-venture.com/blog/${post.value.slug}`,
+      },
+    ],
+  }),
+  defineArticle({
+    '@type': 'BlogPosting',
+    headline: post.value.title,
+    description: post.value.description,
+    publisher: {
+      '@type': 'Organization',
+      name: 'CampVenture',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.camp-venture.com/logo.png',
+      },
+    },
+    datePublished: post.value.date_created,
+    dateModified: post.value.date_updated,
+    image: `https://api-affiliate-websites.com/assets/${post.value.image}`,
+    articleSection: ['Camping'],
+    articleBody: post.value.content,
+    keywords: ['camping', 'tente', 'outdoor', 'survival'],
+    offers: post.value.products_affiliate.map((product) => ({
+      '@type': 'Offer',
+      name: (
+        (product as ProductsAffiliateArticles)
+          .products_affiliate_id as ProductsAffiliate
+      ).name,
+      url: `https://www.camp-venture.com/blog/${
+        (
+          (product as ProductsAffiliateArticles)
+            .products_affiliate_id as ProductsAffiliate
+        ).slug
+      }`,
+    })),
+  }),
+]);
 </script>
 
 <template>
@@ -114,7 +184,7 @@ useSeoMeta({
         <div class="max-w-screen-md mx-auto" v-html="post.content"></div>
       </UPageBody>
       <ULandingSection
-        v-if="related_articles?.length || post.related_articles?.length"
+        v-if="post.related_articles?.length"
         class="max-w-screen-lg mx-auto"
         title="Other articles you might like"
       >
@@ -144,23 +214,24 @@ useSeoMeta({
               description: 'line-clamp-2',
             }"
           />
+        </UBlogList>
+      </ULandingSection>
+      <ULandingSection
+        v-if="post.products_affiliate?.length"
+        class="max-w-screen-lg mx-auto"
+        title="Related products you might like"
+      >
+        <UBlogList class="!grid-cols-6">
           <UBlogPost
-            v-for="(article, index) in related_articles || []"
+            v-for="(product, index) in (post.products_affiliate as ProductsAffiliateArticles[])?.map(
+              (x) => x.products_affiliate_id
+            ) || []"
             :key="index"
-            :to="`/blog/${article.slug}`"
-            :title="article.title"
-            :description="article.description"
-            :image="`https://api-affiliate-websites.com/assets/${article.image}`"
-            :date="
-              new Date(
-                article?.date_updated || article.date_created
-              ).toLocaleDateString('en', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })
-            "
-            :badge="{label: (article.category as ArticlesCategories).name}"
+            :to="`/products/${product.slug}`"
+            :title="product.title"
+            :description="product.description"
+            :image="`https://api-affiliate-websites.com/assets/${product.image}`"
+            :badge="{label: (product.category as ProductCategories).name}"
             :orientation="'vertical'"
             :class="'col-span-3'"
             :ui="{

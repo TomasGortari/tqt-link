@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useSchemaOrg, defineWebPage, defineWebSite } from '#imports';
 const colorMode = useColorMode();
 
 const color = computed(() =>
@@ -18,11 +19,19 @@ useHead({
 });
 
 useSeoMeta({
-  titleTemplate: '%s - Nuxt UI Pro - SaaS template',
-  ogImage: 'https://saas-template.nuxt.dev/social-card.png',
-  twitterImage: 'https://saas-template.nuxt.dev/social-card.png',
+  titleTemplate: '%s - CampVenture',
+  ogImage: '/opengraph.png',
+  twitterImage: '/opengraph.png',
   twitterCard: 'summary_large_image',
 });
+// useSchemaOrg([
+//   defineWebPage({
+//     name: 'My Page',
+//   }),
+//   defineWebSite({
+//     name: 'My Site',
+//   }),
+// ]);
 </script>
 
 <template>

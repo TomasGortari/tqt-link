@@ -3,10 +3,7 @@ const links = [
   {
     label: 'Quick Links',
     children: [
-      {
-        label: 'Home',
-        to: '/',
-      },
+      { label: 'All articles', to: '/blog' },
       {
         label: 'Buying Guides',
         to: '/blog/category/buying-guides',
@@ -24,6 +21,10 @@ const links = [
         to: '/blog/category/gear-reviews',
       },
       {
+        label: 'Products',
+        to: '/products',
+      },
+      {
         label: 'Contact',
         to: '/contact',
       },
@@ -38,7 +39,7 @@ const links = [
       },
       {
         label: 'Terms & Conditions',
-        to: '/terms',
+        to: '/terms-conditions',
       },
       {
         label: 'Affiliate Disclosure',

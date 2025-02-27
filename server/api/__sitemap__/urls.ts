@@ -1,5 +1,10 @@
 import { defineSitemapEventHandler } from '#imports';
-import { Articles, ArticlesCategories } from '~~/types/directus';
+import {
+  Articles,
+  ArticlesCategories,
+  ProductCategories,
+  ProductsAffiliate,
+} from '~~/types/directus';
 
 export default defineSitemapEventHandler(async (event) => {
   // fetch data directly in the correct type
@@ -13,7 +18,21 @@ export default defineSitemapEventHandler(async (event) => {
     `${apiUrl}/items/articles`
   ).then((res) => res.data);
 
-  const staticUrls = ['/contact', '/privacy-policy'];
+  const productsCategories = await $fetch<{ data: ProductCategories[] }>(
+    `${apiUrl}/items/product_categories`
+  ).then((res) => res.data);
+
+  const products = await $fetch<{ data: ProductsAffiliate[] }>(
+    `${apiUrl}/items/products_affiliate`
+  ).then((res) => res.data);
+
+  const staticUrls = [
+    '/contact',
+    '/privacy-policy',
+    '/affiliate-disclosure',
+    '/',
+    '/terms-conditions',
+  ];
 
   return [
     // map URLS as needed
@@ -26,6 +45,14 @@ export default defineSitemapEventHandler(async (event) => {
     })),
     ...articles.map((c) => ({
       loc: `blog/${c.slug}`,
+      lastmod: c?.date_updated || (c.date_created as string),
+    })),
+    ...productsCategories.map((c) => ({
+      loc: `products/category/${c.slug}`,
+      lastmod: c?.date_updated || (c.date_created as string),
+    })),
+    ...products.map((c) => ({
+      loc: `products/${c.slug}`,
       lastmod: c?.date_updated || (c.date_created as string),
     })),
   ];

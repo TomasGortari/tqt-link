@@ -4,7 +4,7 @@ export default defineAppConfig({
     secondary: '#FF9800', // 🔥 Orange feu de camp
     gray: 'cool',
     button: {
-      rounded: 'rounded-full',
+      rounded: 'rounded-lg',
       default: {
         size: 'md',
         color: 'primary',
