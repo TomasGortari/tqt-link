@@ -18,13 +18,17 @@ export default ({ app }) => {
     // 🎯 Suivi des clics sur les liens d'affiliation
     document.addEventListener('click', function (event) {
       let target = event.target.closest('a'); // Vérifie si l'élément cliqué est un lien
-      if (target && target.href.includes('amazon' || 'amzn')) {
-        // 🔹 Remplace 'amazon' par ton domaine d'affiliation
-        gtag('event', 'click_affiliate', {
-          event_category: 'Affiliate',
-          event_label: target.href,
-        });
-        console.log(`🛒 Lien affilié cliqué : ${target.href}`); // Debugging
+      if (target) {
+        const affiliateDomains = ['amazon', 'amzn']; // Ajoute d'autres domaines si nécessaire
+
+        if (affiliateDomains.some((domain) => target.href.includes(domain))) {
+          gtag('event', 'click_affiliate', {
+            event_category: 'Affiliate',
+            event_label: target.href,
+          });
+
+          console.log(`🛒 Lien affilié cliqué : ${target.href}`); // Debugging
+        }
       }
     });
   }
