@@ -11,6 +11,7 @@ useHead({
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     { key: 'theme-color', name: 'theme-color', content: color },
+    { name: 'p:domain_verify', content: 'fd95875d9b4f25cb42333236659a313e' }, // <--- Vérification Pinterest
   ],
   link: [{ rel: 'icon', href: '/favicon.ico' }],
   htmlAttrs: {
