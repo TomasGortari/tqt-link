@@ -11,7 +11,11 @@ useHead({
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
     { key: 'theme-color', name: 'theme-color', content: color },
-    { name: 'p:domain_verify', content: 'fd95875d9b4f25cb42333236659a313e' }, // <--- Vérification Pinterest
+    { name: 'p:domain_verify', content: 'fd95875d9b4f25cb42333236659a313e' }, // Pinterest
+    {
+      name: 'google-site-verification',
+      content: '_1E-WLvYXe8zgTZ_MEk4P-At9LgeEkWxRRYBW_w85DY',
+    }, // Google
   ],
   link: [{ rel: 'icon', href: '/favicon.ico' }],
   htmlAttrs: {
