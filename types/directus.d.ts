@@ -469,6 +469,20 @@ export type DirectusWebhooks = {
   was_active_before_deprecation: boolean;
 };
 
+export type Pins = {
+  boards?: unknown | null;
+  date_created?: string | null;
+  date_to_publish?: string | null;
+  description?: string | null;
+  id: string;
+  image_url?: string | DirectusFiles | null;
+  img_descr?: string | null;
+  link_url?: string | null;
+  publish_log?: string | null;
+  status: string;
+  title?: string | null;
+};
+
 export type PrivacyPolicy = {
   content?: string | null;
   date_created?: string | null;
@@ -582,6 +596,7 @@ export type CustomDirectusTypes = {
   directus_users: DirectusUsers[];
   directus_versions: DirectusVersions[];
   directus_webhooks: DirectusWebhooks[];
+  pins: Pins[];
   privacy_policy: PrivacyPolicy;
   product_categories: ProductCategories[];
   products_affiliate: ProductsAffiliate[];

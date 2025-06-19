@@ -36,7 +36,7 @@ bun install
 
 ## Development Server
 
-Start the development server on `http://localhost:3000`:
+Start the development server on `https://www.camp-venture.com`:
 
 ```bash
 # npm
@@ -123,4 +123,5 @@ Read more on [Nuxt Studio docs](https://nuxt.studio/docs/get-started/setup).
 ## Renovate integration
 
 Install [Renovate GitHub app](https://github.com/apps/renovate/installations/select_target) on your repository and you are good to go.
+
 # front-camping

@@ -181,7 +181,7 @@ useSchemaOrg([
 
     <UPage>
       <UPageBody prose>
-        <div class="max-w-screen-md mx-auto" v-html="post.content"></div>
+        <div class="max-w-screen-md mx-auto" v-html="post.content"/>
       </UPageBody>
       <ULandingSection
         v-if="post.related_articles?.length"

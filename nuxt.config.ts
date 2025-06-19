@@ -52,6 +52,8 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    pinterestClientId: process.env.PINTEREST_CLIENT_ID,
+    pinterestClientSecret: process.env.PINTEREST_CLIENT_SECRET,
     apiUrl: 'https://api-affiliate-websites.com',
     public: {
       website_id: '822b96b8-90f5-4329-a144-55691052b515',
