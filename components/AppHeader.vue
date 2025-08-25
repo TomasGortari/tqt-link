@@ -1,26 +1,6 @@
 <script setup lang="ts">
 const links = [
-  { label: 'All articles', to: '/blog', icon: 'i-lucide-rss' },
-  {
-    label: 'Buying Guides',
-    to: '/blog/category/buying-guides',
-    icon: 'i-lucide-shopping-cart',
-  },
-  {
-    label: 'Tutorials',
-    to: '/blog/category/tutorials',
-    icon: 'i-lucide-book-open',
-  },
-  {
-    label: 'Tips & Tricks',
-    to: '/blog/category/tips-tricks',
-    icon: 'i-lucide-lightbulb',
-  },
-  {
-    label: 'Gear Reviews',
-    to: '/blog/category/gear-reviews',
-    icon: 'i-lucide-star',
-  },
+
 ];
 </script>
 
@@ -32,14 +12,7 @@ const links = [
       </ULink>
     </template>
 
-    <template #right>
-      <UButton
-        label="Shop"
-        color="primary"
-        icon="i-lucide-store"
-        to="/products"
-      />
-    </template>
+
 
     <template #panel>
       <UNavigationTree :links="links" default-open />

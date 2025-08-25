@@ -8,7 +8,7 @@ export default <Partial<Config>>{
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        primary: '#2E7D32', // 🌿 Vert forêt
+        primary: '#FF9800', // 🌿 Vert forêt
         secondary: '#FF9800', // 🔥 Orange feu de camp
       },
     },

@@ -1,6 +1,6 @@
 export default defineAppConfig({
   ui: {
-    primary: '#2E7D32', // 🌿 Vert forêt
+    primary: 'orange', // 🌿 Vert forêt
     secondary: '#FF9800', // 🔥 Orange feu de camp
     gray: 'cool',
     button: {

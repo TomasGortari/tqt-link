@@ -29,34 +29,19 @@ export default defineNuxtConfig({
       },
     },
   },
-  plugins: [{ src: '~/plugins/gtag.client.js', mode: 'client' }],
+ 
   compatibilityDate: '2024-07-11',
 
   typescript: {
     strict: false,
-  },
-  schemaOrg: {
-    host: 'https://www.camp-venture.com',
   },
   // $schema: {
   //   host: 'https://www.camp-venture.com',
 
   // },
   site: {
-    url: 'https://www.camp-venture.com',
-    name: 'CampVenture',
+    url: 'https://www.trucsquichangenttout.com',
+    name: 'TrucsQuiChangentTout',
   },
 
-  sitemap: {
-    sources: ['/api/__sitemap__/urls'],
-  },
-
-  runtimeConfig: {
-    pinterestClientId: process.env.PINTEREST_CLIENT_ID,
-    pinterestClientSecret: process.env.PINTEREST_CLIENT_SECRET,
-    apiUrl: 'https://api-affiliate-websites.com',
-    public: {
-      website_id: '822b96b8-90f5-4329-a144-55691052b515',
-    },
-  },
 });
