@@ -1,6 +1,20 @@
 <script setup lang="ts">
 const links = [
-
+  {
+    label: "Amazon",
+    to: "/amazon",
+    icon: "i-lucide-shopping-cart"
+  },
+  {
+    label: "TikTok Shop",
+    to: "/tiktok",
+    icon: "i-lucide-shopping-bag"
+  },
+  {
+    label: "Vidéos",
+    to: "/videos",
+    icon: "i-lucide-play-circle"
+  }
 ];
 </script>
 

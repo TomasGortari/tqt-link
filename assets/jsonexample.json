@@ -1,0 +1,61 @@
+{
+    "products": {
+      "aspirateurusb": {
+        "id": "aspirateurusb",
+        "name": "Mini aspirateur USB",
+        "image": "/images/aspirateurusb.jpg",
+        "amazonLink": "https://www.amazon.fr/dp/XXXX?tag=trucschangent-21",
+        "category": "Bureau",
+        "tags": ["nettoyage", "clavier"],
+        "price": 19.99
+      },
+    "raclette": {
+        "id": "raclette",
+        "name": "Raclette de douche",
+        "image": "/images/raclette.jpg",
+        "amazonLink": "https://www.amazon.fr/dp/YYYY?tag=trucschangent-21",
+        "tiktokLink": "https://www.tiktok.com/shop/product/XXXX",
+        "category": "Salle de bain",
+        "tags": ["douche", "vitre"]
+      },
+      "percarbonate": {
+        "id": "percarbonate",
+        "name": "Percarbonate de soude",
+        "image": "/images/percarbonate.jpg",
+        "amazonLink": "https://www.amazon.fr/dp/PPPP?tag=trucschangent-21",
+        "category": "Salle de bain",
+        "tags": ["joints", "blanchissant"]
+      },
+      "minuteur": {
+        "id": "minuteur",
+        "name": "Minuteur œuf couleur",
+        "image": "/images/minuteur.jpg",
+        "amazonLink": "https://www.amazon.fr/dp/ZZZZ?tag=trucschangent-21",
+        "category": "Cuisine",
+        "tags": ["cuisson", "œuf"],
+        "price": 7.49
+      }
+    },
+  
+    "videos": {
+      "shower": {
+        "id": "shower",
+        "title": "Astuce douche : vitre + sol + joints",
+        "thumb": "/images/videos/shower-thumb.jpg",
+        "productIds": ["raclette", "percarbonate"]
+      },
+      "bureau-clean": {
+        "id": "bureau-clean",
+        "title": "Bureau propre : clavier en 10s",
+        "thumb": "/images/videos/bureau-clean-thumb.jpg",
+        "productIds": ["aspirateurusb"]
+      },
+      "oeufs-parfaits": {
+        "id": "oeufs-parfaits",
+        "title": "Œufs parfaits à chaque fois",
+        "thumb": "/images/videos/oeufs-thumb.jpg",
+        "productIds": ["minuteur"]
+      }
+    }
+  }
+  

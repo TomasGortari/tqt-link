@@ -11,11 +11,19 @@ type Product = {
   tags?: string[]
 }
 
+type Links = {
+    tiktok: string
+    instagram: string
+    youtube: string
+
+}
+
 type Video = {
   id: string
   title: string
   thumb?: string
   productIds: string[]
+  links: Links
 }
 
 const productsMap = store.products as Record<string, Product>
@@ -100,15 +108,49 @@ useHead({
         </div>
 
         <!-- CTA direction automatique -->
-        <UButton :to="targetFor(v)" block color="primary" variant="solid">
-          <template #leading>
-            <UIcon
-              :name="countByPlatform(v).tiktok ? 'lucide:shopping-bag' : 'lucide:shopping-cart'"
-              class="w-5 h-5 text-white"
-            />
-          </template>
-          Voir les produits
-        </UButton>
+        <UButton :to="targetFor(v)" block color="primary" variant="solid" class="mb-2">
+  <template #leading>
+    <UIcon
+      :name="countByPlatform(v).tiktok ? 'lucide:shopping-bag' : 'lucide:shopping-cart'"
+      class="w-5 h-5 text-white"
+    />
+  </template>
+  Voir les produits
+</UButton>
+
+<!-- Boutons vidéos (multi-plateformes) -->
+<div class="flex flex-col gap-2">
+  <UButton
+    v-if="v.links?.tiktok"
+    :to="v.links.tiktok"
+    target="_blank"
+    color="pink"
+    
+    size="sm"
+  >
+    <UIcon name="lucide:music" class="w-4 h-4 mr-1" /> TikTok
+  </UButton>
+  <UButton
+    v-if="v.links?.youtube"
+    :to="v.links.youtube"
+    target="_blank"
+    color="red"
+
+    size="sm"
+  >
+    <UIcon name="lucide:youtube" class="w-4 h-4 mr-1" /> YouTube
+  </UButton>
+  <UButton
+    v-if="v.links?.instagram"
+    :to="v.links.instagram"
+    target="_blank"
+    color="purple"
+
+    size="sm"
+  >
+    <UIcon name="lucide:instagram" class="w-4 h-4 mr-1" /> Insta
+  </UButton>
+</div>
       </UCard>
     </div>
 
