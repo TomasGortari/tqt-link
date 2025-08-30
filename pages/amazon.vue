@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { NuxtImg } from '#components'
 import store from '~/assets/store.json'
 
 // Types
@@ -183,7 +184,7 @@ useHead({
     <!-- Grille complète -->
     <div v-if="filtered.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <UCard v-for="p in filtered" :key="p.id" class="flex flex-col">
-        <img v-if="p.image" :src="p.image" :alt="p.name" class="rounded-xl w-full mb-3" />
+        <NuxtImg v-if="p.image" :src="p.image" :alt="p.name" class="rounded-xl w-full mb-3 object-cover h-[250px]  " />
         <div class="flex-1">
           <h3 class="font-medium mb-1 line-clamp-2">{{ p.name }}</h3>
           <div class="flex flex-wrap gap-2 mb-3">

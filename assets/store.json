@@ -1,30 +1,44 @@
 {
   "products": {
-"bougieprofonde": {
-        "id": "bougieprofonde",
-        "name": "Bougie parfumé Yankee",
-        "image": "/images/bougieprofonde.jpg",
-        "amazonLink": "https://amzn.to/3HOBbGi",
-        "category": "Maison",
-        "tags": [
-  "bougie parfumée",
-  "longue durée"
-]
-      }
+    "bougieprofonde": {
+      "id": "bougieprofonde",
+      "name": "Bougie parfumé Yankee",
+      "image": "/images/bougieprofonde.jpg",
+      "amazonLink": "https://amzn.to/3HOBbGi",
+      "category": "Maison",
+      "tags": ["bougie parfumée", "longue durée"]
+    },
+    "elastiques_resistance": {
+      "id": "elastiques_resistance",
+      "name": "Bandes élastiques de résistance",
+      "image": "/images/2-3008025.jpg",
+      "amazonLink": "https://amzn.to/4oYUGN9.", 
+      "category": "Fitness",
+      "tags": ["élastiques", "musculation", "rééducation", "maison"]
+    }
   },
-  
   "videos": {
-  "1-27082025": {
-    "id": "1-27082025",
-    "title": "Astuce bougie : spaghetti",
-    "thumb": "/images/videos/bougie-thumb.png",
-    "productIds": ["bougieprofonde"],
-    "links": {
-      "tiktok": "https://www.tiktok.com/@trucsquichangentt/video/7543260496531557654",
-      "youtube": "https://www.youtube.com/shorts/E_ES5VuwkRY",
-      "instagram": "https://www.instagram.com/p/DN3IB8AUKCr/"
+    "1-27082025": {
+      "id": "1-27082025",
+      "title": "Astuce bougie : spaghetti",
+      "thumb": "/images/videos/bougie-thumb.png",
+      "productIds": ["bougieprofonde"],
+      "links": {
+        "tiktok": "https://www.tiktok.com/@trucsquichangentt/video/7543260496531557654",
+        "youtube": "https://www.youtube.com/shorts/E_ES5VuwkRY",
+        "instagram": "https://www.instagram.com/p/DN3IB8AUKCr/"
+      }
+    },
+    "2-3008-2025": {
+      "id": "2-3008-2025",
+      "title": "Astuce pince avec fourchettes",
+      "thumb": "/images/videos/thumb-2.png",
+      "productIds": ["elastiques_resistance"],
+      "links": {
+        "tiktok": "https://www.tiktok.com/@trucsquichangentt/video/7544315655244369174",
+        "youtube": "https://www.youtube.com/shorts/Gr_OT1WiREU",
+        "instagram": "https://www.instagram.com/p/DN-bO0xgCsY/"
+      }
     }
   }
-}
-
 }
