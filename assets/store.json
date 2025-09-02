@@ -12,9 +12,41 @@
       "id": "elastiques_resistance",
       "name": "Bandes élastiques de résistance",
       "image": "/images/2-3008025.jpg",
-      "amazonLink": "https://amzn.to/4oYUGN9.", 
+      "amazonLink": "https://amzn.to/4oYUGN9.",
       "category": "Fitness",
       "tags": ["élastiques", "musculation", "rééducation", "maison"]
+    },
+    "passoir": {
+      "id": "passoir",
+      "name": "Passoire cuisine",
+      "image": "/images/passoir.jpg",
+      "amazonLink": "https://amzn.to/4mIEga1",
+      "category": "Cuisine",
+      "tags": ["passoire", "fromage", "cuisine"]
+    },
+    "mixer": {
+      "id": "mixer",
+      "name": "Mixeur électrique",
+      "image": "/images/mixer.jpg",
+      "amazonLink": "https://amzn.to/3I1I72Q",
+      "category": "Cuisine",
+      "tags": ["mixeur", "nettoyage", "cuisine"]
+    },
+    "trombone": {
+      "id": "trombone",
+      "name": "Trombones métalliques",
+      "image": "/images/trombone.jpg",
+      "amazonLink": "https://amzn.to/3Vuqjk0",
+      "category": "Bureau",
+      "tags": ["trombone", "fermeture", "réparation"]
+    },
+    "postit": {
+      "id": "postit",
+      "name": "Post-it",
+      "image": "/images/postit.jpg",
+      "amazonLink": "https://amzn.to/4p3uEYV",
+      "category": "Bureau",
+      "tags": ["notes", "pense bête"]
     }
   },
   "videos": {
@@ -39,6 +71,52 @@
         "youtube": "https://www.youtube.com/shorts/Gr_OT1WiREU",
         "instagram": "https://www.instagram.com/p/DN-bO0xgCsY/"
       }
+    },
+    "3-3108-2025": {
+      "id": "3-3108-2025",
+      "title": "Astuce fromage avec passoire",
+      "thumb": "/images/videos/passoir.png",
+      "productIds": ["passoir"],
+      "links": {
+        "tiktok": "https://www.tiktok.com/@trucsquichangentt/video/7545116190327278870",
+        "youtube": "https://www.youtube.com/shorts/4KD1kqA9oc0",
+        "instagram": "https://www.instagram.com/p/DOF8sdxgK1T/"
+      }
+    },
+    "4-3108-2025": {
+      "id": "4-3108-2025",
+      "title": "Astuce nettoyage mixeur",
+      "thumb": "/images/videos/mixer.png",
+      "productIds": ["mixer"],
+      "links": {
+        "tiktok": "https://www.tiktok.com/@trucsquichangentt/video/7545117387826236694",
+        "youtube": "https://www.youtube.com/shorts/8wnRnotnMRY",
+        "instagram": "https://www.instagram.com/p/DOD-T8zAGcy/"
+      }
+    },
+    "5-3108-2025": {
+      "id": "5-3108-2025",
+      "title": "Astuce fermeture éclair trombone",
+      "thumb": "/images/videos/trombone.png",
+      "productIds": ["trombone"],
+      "links": {
+        "tiktok": "https://www.tiktok.com/@trucsquichangentt/video/7545475702359854358",
+        "youtube": "https://www.youtube.com/shorts/p7gK-9_nnLo",
+        "instagram": "https://www.instagram.com/p/DOGbR2XDIzM/"
+      }
+    },
+    "6-3108-2025": {
+      "id": "6-3108-2025",
+      "title": "Astuce range stylo avec post it",
+      "thumb": "/images/videos/postit.png",
+      "productIds": ["postit"],
+      "links": {
+        "tiktok": "https://www.tiktok.com/@trucsquichangentt/video/7545117579908484374",
+        "youtube": "https://www.youtube.com/shorts/jdVMHdwikAY",
+        "instagram": "https://www.instagram.com/p/DOD9y8hgK4w/"
+      }
     }
+
   }
 }
+
