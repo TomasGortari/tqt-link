@@ -29,7 +29,9 @@ export default defineNuxtConfig({
       },
     },
   },
- 
+ runtimeConfig: {
+public: {directusUrl:'https://api-affiliate-websites.com' }
+ },
   compatibilityDate: '2024-07-11',
 
   typescript: {

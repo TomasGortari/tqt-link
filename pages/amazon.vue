@@ -1,62 +1,168 @@
 <script setup lang="ts">
-import { NuxtImg } from '#components'
-import store from '~/assets/store.json'
 
-// Types
-type Product = {
-  id: string
+
+// Types (adapte le chemin si besoin)
+import { NuxtImg } from '#components'
+import type { CustomDirectusTypes, Products, Videos } from '~/types/directus'
+
+// Composables Directus (d’après ceux que tu as fait générer)
+
+
+// Helpers
+const runtimeConfig = useRuntimeConfig()
+const assetBase = runtimeConfig.public.directusUrl?.replace(/\/+$/, '') || ''
+const assetUrl = (fileId?: string | null) => (fileId ? `${assetBase}/assets/${fileId}` : '')
+
+// Route + params
+const route = useRoute()
+const videoId = computed<number | null>(() => {
+  const v = route.query.video
+  const n = Number(v)
+  return Number.isFinite(n) ? n : null
+})
+const prodId = computed<number | null>(() => {
+  const p = route.query.prod
+  const n = Number(p)
+  return Number.isFinite(n) ? n : null
+})
+
+// ----- DATA FETCHING -----
+// 1) Vidéo active (si ?video)
+const {
+  data: activeVideoRes,
+  status: videoStatus
+} = useVideo(videoId.value as number, {
+  // Champs nécessaires pour la card vidéo + les produits liés via la table pivot
+  fields: [
+    'id','title','thumb.id','tiktok_link','youtube_link','instagram_link','status',
+    // M2M via junction: videos.products[].products_id -> Products
+    'products.products_id.id',
+    'products.products_id.name',
+    'products.products_id.amazon_link',
+    'products.products_id.image.id',
+    'products.products_id.status',
+    'products.products_id.tags',
+    'products.products_id.category.id',
+    'products.products_id.category.name'
+  ],
+  // Aucun tri/limite particulier ici
+} as any)
+
+// 2) Produits publiés pour la grille complète
+const {
+  data: productsRes,
+  status: productsStatus
+} = useProducts({
+  fields: [
+    'id','name','amazon_link','status','tags',
+    'image.id',
+    'category.id','category.name'
+  ],
+  filter: { status: { _eq: 'published' } },
+  sort: ['name']
+} as any)
+
+// 3) Produit en vedette (si ?prod et pas de ?video)
+const {
+  data: featuredRes,
+  status: featuredStatus
+} = useProduct(prodId.value as number, {
+  fields: [
+    'id','name','amazon_link','status','tags',
+    'image.id',
+    'category.id','category.name'
+  ]
+} as any)
+
+// ----- MAPPERS (Directus -> UI props) -----
+type UIProduct = {
+  id: number
   name: string
   image?: string
   amazonLink?: string
   category?: string
   tags?: string[]
-  price?: number
 }
-type Video = {
-  id: string
+
+type UIVideo = {
+  id: number
   title: string
   thumb?: string
-  productIds: string[]
+  tiktok_link?: string
+  youtube_link?: string
+  instagram_link?: string
 }
 
-// Maps
-const productsMap = store.products as Record<string, Product>
-const videosMap = store.videos as Record<string, Video>
-
-// Tableau produits amazon only
-const allProducts = computed<Product[]>(() =>
-  Object.values(productsMap).filter(p => !!p.amazonLink)
-)
-
-// Route + params
-const route = useRoute()
-const prodKey = (route.query.prod as string) || ''
-const videoKey = (route.query.video as string) || ''
-
-// Sélection vidéo / produits de la vidéo
-const activeVideo = computed<Video | null>(() => {
-  const v = videosMap[videoKey]
-  return v && Array.isArray(v.productIds) && v.productIds.length ? v : null
-})
-const videoProducts = computed<Product[]>(() => {
-  if (!activeVideo.value) return []
-  return activeVideo.value.productIds
-    .map(id => productsMap[id])
-    .filter(Boolean)
+const allProducts = computed<UIProduct[]>(() => {
+  const rows = productsRes.value ?? []
+  return rows
+    .filter(p => p?.status === 'published')
+    .map(p => ({
+      id: p.id!,
+      name: p.name ?? '',
+      image: assetUrl((p.image as any)?.id ?? null),
+      amazonLink: p.amazon_link ?? undefined,
+      category: (p.category as any)?.name ?? undefined,
+      tags: Array.isArray(p.tags) ? p.tags as string[] : (typeof p.tags === 'string' ? (p.tags as string).split(',').map(s=>s.trim()).filter(Boolean) : [])
+    }))
     .filter(p => !!p.amazonLink)
 })
 
-// Fallback : produit unique en vedette via ?prod (si pas de video)
-const featured = computed<Product | null>(() => {
-  if (activeVideo.value) return null
-  const p = prodKey && productsMap[prodKey]
-  return p && p.amazonLink ? p : null
+// Vidéo active (UI)
+const activeVideo = computed<UIVideo | null>(() => {
+  if (!videoId.value) return null
+  const v = activeVideoRes.value
+  if (!v || v.status !== 'published') return null
+  return {
+    id: v.id!,
+    title: v.title ?? '',
+    thumb: assetUrl((v.thumb as any)?.id ?? null),
+    tiktok_link: v.tiktok_link ?? undefined,
+    youtube_link: v.youtube_link ?? undefined,
+    instagram_link: v.instagram_link ?? undefined
+  }
 })
 
-// Filtres/Recherche/Tri pour la grille complète
+// Produits de la vidéo active via junction
+const videoProducts = computed<UIProduct[]>(() => {
+  const v = activeVideoRes.value
+  if (!v || !Array.isArray(v.products)) return []
+  const junctions = v.products as any[] // VideosProducts[]
+  const items: UIProduct[] = []
+  for (const j of junctions) {
+    const p = j?.products_id as Products | undefined
+    if (!p || p.status !== 'published' || !p.amazon_link) continue
+    items.push({
+      id: p.id!,
+      name: p.name ?? '',
+      image: assetUrl((p.image as any)?.id ?? null),
+      amazonLink: p.amazon_link ?? undefined,
+      category: (p.category as any)?.name ?? undefined,
+      tags: Array.isArray(p.tags) ? (p.tags as string[]) : (typeof p.tags === 'string' ? (p.tags as string).split(',').map(s=>s.trim()).filter(Boolean) : [])
+    })
+  }
+  return items
+})
+
+// Produit vedette (si pas de vidéo)
+const featured = computed<UIProduct | null>(() => {
+  if (activeVideo.value || !prodId.value) return null
+  const p = featuredRes.value
+  if (!p || p.status !== 'published' || !p.amazon_link) return null
+  return {
+    id: p.id!,
+    name: p.name ?? '',
+    image: assetUrl((p.image as any)?.id ?? null),
+    amazonLink: p.amazon_link ?? undefined,
+    category: (p.category as any)?.name ?? undefined,
+    tags: Array.isArray(p.tags) ? p.tags as string[] : (typeof p.tags === 'string' ? (p.tags as string).split(',').map(s=>s.trim()).filter(Boolean) : [])
+  }
+})
+
+// Filtres/Recherche/Tri
 const q = ref('')
 const selectedCategory = ref<string>('Toutes')
-const sortBy = ref<'relevance' | 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc'>('relevance')
+const sortBy = ref<'relevance' | 'name-asc' | 'name-desc'>('relevance') // (on retire le tri par prix)
 
 const categories = computed<string[]>(() => {
   const set = new Set<string>()
@@ -64,7 +170,7 @@ const categories = computed<string[]>(() => {
   return ['Toutes', ...Array.from(set).sort()]
 })
 
-const filtered = computed<Product[]>(() => {
+const filtered = computed<UIProduct[]>(() => {
   const term = q.value.trim().toLowerCase()
   let items = allProducts.value.filter(p => {
     const hay = `${p.name} ${(p.tags || []).join(' ')} ${p.category || ''}`.toLowerCase()
@@ -76,9 +182,7 @@ const filtered = computed<Product[]>(() => {
   switch (sortBy.value) {
     case 'name-asc': items.sort((a,b)=>a.name.localeCompare(b.name)); break
     case 'name-desc': items.sort((a,b)=>b.name.localeCompare(a.name)); break
-    case 'price-asc': items.sort((a,b)=>(a.price??Infinity)-(b.price??Infinity)); break
-    case 'price-desc': items.sort((a,b)=>(b.price??-Infinity)-(a.price??-Infinity)); break
-    default: /* relevance: keep original order */ break
+    default: /* relevance: ordre d’arrivée */ break
   }
   return items
 })
@@ -115,7 +219,7 @@ useHead({
         </template>
 
         <div class="flex items-start gap-4 mb-4">
-          <img v-if="activeVideo.thumb" :src="activeVideo.thumb" :alt="activeVideo.title" class="w-28 h-16 object-cover rounded-lg" />
+          <NuxtImg v-if="activeVideo.thumb" :src="activeVideo.thumb" :alt="activeVideo.title" class="w-28 h-16 object-cover rounded-lg" />
           <div>
             <h2 class="text-lg font-semibold">{{ activeVideo.title }}</h2>
             <p class="text-sm opacity-70">Sélection liée à cette vidéo.</p>
@@ -173,9 +277,7 @@ useHead({
         :options="[
           { label: 'Pertinence', value: 'relevance' },
           { label: 'Nom A→Z', value: 'name-asc' },
-          { label: 'Nom Z→A', value: 'name-desc' },
-          { label: 'Prix ↑', value: 'price-asc' },
-          { label: 'Prix ↓', value: 'price-desc' }
+          { label: 'Nom Z→A', value: 'name-desc' }
         ]"
         icon="lucide:sort-desc"
       />
@@ -184,7 +286,7 @@ useHead({
     <!-- Grille complète -->
     <div v-if="filtered.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <UCard v-for="p in filtered" :key="p.id" class="flex flex-col">
-        <NuxtImg v-if="p.image" :src="p.image" :alt="p.name" class="rounded-xl w-full mb-3 object-cover h-[250px]  " />
+        <NuxtImg v-if="p.image" :src="p.image" :alt="p.name" class="rounded-xl w-full mb-3 object-cover h-[250px]" />
         <div class="flex-1">
           <h3 class="font-medium mb-1 line-clamp-2">{{ p.name }}</h3>
           <div class="flex flex-wrap gap-2 mb-3">
